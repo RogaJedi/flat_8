@@ -40,10 +40,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _loadNotes(); // Load notes when the widget initializes
+    loadNotes(); // Load notes when the widget initializes
   }
 
-  Future<void> _loadNotes() async {
+  Future<void> loadNotes() async {
     try {
       final loadedNotes = await _apiService.getProducts();
       setState(() {
@@ -91,40 +91,35 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _deleteProduct(Note note) {
-    setState(() {
-      notes.remove(note);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> _pages = [
       HomePage(
-        baseNotes: notes,
+        notes: notes,
+        loader: loadNotes(),
         likedGames: likedGames,
         cartGames: cartGames,
         onLikedToggle: _toggleFavorite,
         onAddCart: _addToCart,
-        onDeleteProduct: _deleteProduct,
       ),
       LikedPage(
-        baseNotes: notes,
+        notes: notes,
+        loader: loadNotes(),
         likedGames: likedGames,
         cartGames: cartGames,
         onLikedToggle: _toggleFavorite,
         onAddCart: _addToCart,
-        onDeleteProduct: _deleteProduct,
       ),
       CartPage(
-        baseNotes: notes,
+        notes: notes,
+        loader: loadNotes(),
         cartGames: cartGames,
         likedGames: likedGames,
         onAddToCart: _addToCart,
         onLikedToggle: _toggleFavorite,
         onRemoveFromCart: _removeFromCart,
         onDeleteFromCart: _deleteFromCart,
-        onDeleteProduct: _deleteProduct,
       ),
       const ProfilePage(),
     ];

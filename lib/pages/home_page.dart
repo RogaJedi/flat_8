@@ -6,22 +6,22 @@ import '../add_game.dart';
 import '../api_service.dart';
 
 class HomePage extends StatefulWidget {
-  final List<Note> baseNotes;
+  final List<Note> notes;
+  final Future<void> loader;
   final Set<Note> likedGames;
   final Set<Note> cartGames;
   final Function(Note) onLikedToggle;
   final Function(Note) onAddCart;
-  final Function(Note) onDeleteProduct;
 
 
   const HomePage({
     Key? key,
-    required this.baseNotes,
+    required this.notes,
+    required this.loader,
     required this.likedGames,
     required this.cartGames,
     required this.onLikedToggle,
     required this.onAddCart,
-    required this.onDeleteProduct,
   }) : super(key: key);
 
   @override
@@ -30,32 +30,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  List<Note> notes = []; // Initialize an empty list
   final ApiService _apiService = ApiService();
 
   @override
   void initState() {
     super.initState();
-    _loadNotes(); // Load notes when the widget initializes
-  }
-
-  Future<void> _loadNotes() async {
-    try {
-      final loadedNotes = await _apiService.getProducts();
-      setState(() {
-        notes = loadedNotes;
-      });
-    } catch (e) {
-      // Handle error (e.g., show a snackbar or dialog)
-      print('Error loading notes: $e');
-    }
+    widget.loader; // Load notes when the widget initializes
   }
 
   void _navigateToAddNoteScreen(BuildContext context) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => AddGame(onNoteAdded: this.addNewNote, loader: _loadNotes,)),
+          builder: (context) => AddGame(onNoteAdded: this.addNewNote, loader: widget.loader,)),
     );
 
     if (result != null && result.isNotEmpty) {
@@ -78,7 +65,7 @@ class _HomePageState extends State<HomePage> {
         title: Text('Настольные Игры'),
       ),
       body: Scrollbar(
-        child: notes.isEmpty
+        child: widget.notes.isEmpty
             ? const Center(child: Text('Пока что тут пусто, добавьте что-нибудь!'))
             : GridView.builder(
           padding: const EdgeInsets.all(8.0),
@@ -88,15 +75,17 @@ class _HomePageState extends State<HomePage> {
             mainAxisSpacing: 8.0,
             childAspectRatio: 0.59, // Соотношение сторон элементов
           ),
-          itemCount: notes.length,
+          itemCount: widget.notes.length,
           itemBuilder: (context, index) {
-            final note = notes[index];
+            final note = widget.notes[index];
             return GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => GamePage(
+                      gameNote: note,
+                      loader: widget.loader,
                       id: (index + 1).toString(),
                       cartGames: widget.cartGames,
                       likedGames: widget.likedGames,
@@ -109,7 +98,7 @@ class _HomePageState extends State<HomePage> {
               child: Stack(
                 children: [
                   BoardGameCard(
-                    gameNote: note,
+                    gameNote: widget.notes[index],
                   ),
                   const Positioned(
                     top: 20,

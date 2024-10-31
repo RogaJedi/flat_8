@@ -3,27 +3,39 @@ import '../notes.dart';
 import '../board_game_card.dart';
 import '../game_page.dart';
 
-class LikedPage extends StatelessWidget {
-  final List<Note> baseNotes;
+class LikedPage extends StatefulWidget {
+  final List<Note> notes;
+  final Future<void> loader;
   final Set<Note> likedGames;
   final Set<Note> cartGames;
   final Function(Note) onLikedToggle;
   final Function(Note) onAddCart;
-  final Function(Note) onDeleteProduct;
 
   const LikedPage({
     Key? key,
-    required this.baseNotes,
+    required this.notes,
+    required this.loader,
     required this.likedGames,
     required this.cartGames,
     required this.onLikedToggle,
     required this.onAddCart,
-    required this.onDeleteProduct,
   }) : super(key: key);
 
   @override
+  _LikedPageState createState() => _LikedPageState();
+}
+
+class _LikedPageState extends State<LikedPage>{
+
+  @override
+  void initState() {
+    super.initState();
+    widget.loader; // Load notes when the widget initializes
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final likedGamesList = likedGames.toList();
+    final likedGamesList = widget.likedGames.toList();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Избранное'),
@@ -44,11 +56,13 @@ class LikedPage extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => GamePage(
+                    gameNote: note,
+                    loader: widget.loader,
                     id: (index + 1).toString(),
-                    cartGames: cartGames,
-                    likedGames: likedGames,
-                    onAddCart: onAddCart,
-                    onLikedToggle: onLikedToggle,
+                    cartGames: widget.cartGames,
+                    likedGames: widget.likedGames,
+                    onAddCart: widget.onAddCart,
+                    onLikedToggle: widget.onLikedToggle,
                   ),
                 ),
               );
@@ -67,7 +81,7 @@ class LikedPage extends StatelessWidget {
                       color: Colors.red,
                     ),
                     onPressed: () {
-                      onLikedToggle(note);
+                      widget.onLikedToggle(note);
                     },
                   ),
                 ),

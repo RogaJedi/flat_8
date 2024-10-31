@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../notes.dart';
 import 'package:flutter/services.dart';
-import 'api_service.dart';
 
 class AddGame extends StatefulWidget {
 
@@ -9,7 +8,7 @@ class AddGame extends StatefulWidget {
   _AddGameState createState() => _AddGameState();
 
   final Function(Note) onNoteAdded;
-  final VoidCallback loader;
+  final Future<void> loader;
   AddGame({
     required this.onNoteAdded,
     required this.loader,
@@ -89,7 +88,7 @@ class _AddGameState extends State<AddGame> {
                 if (_noteControllerTitle.text.isNotEmpty && _noteControllerImageURL.text.isNotEmpty && _noteControllerShortInfo.text.isNotEmpty && _noteControllerFullInfo.text.isNotEmpty && _noteControllerCost.text.isNotEmpty) {
                   Note newNote = Note(name: _noteControllerTitle.text, basic_info: _noteControllerShortInfo.text, imageUrl:_noteControllerImageURL.text, description: _noteControllerFullInfo.text, price: int.parse(_noteControllerCost.text), amount: 0);
                   widget.onNoteAdded(newNote);
-                  widget.loader();
+                  widget.loader;
                   Navigator.pop(context);
                 }
               },

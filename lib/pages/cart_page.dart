@@ -2,32 +2,37 @@ import 'package:flutter/material.dart';
 import '../notes.dart';
 import '../game_page.dart';
 
-class CartPage extends StatelessWidget {
-  final List<Note> baseNotes;
+class CartPage extends StatefulWidget {
+  final List<Note> notes;
+  final Future<void> loader;
   final Set<Note> cartGames;
   final Set<Note> likedGames;
   final Function(Note) onLikedToggle;
   final Function(Note) onAddToCart;
   final Function(Note) onRemoveFromCart;
   final Function(Note) onDeleteFromCart;
-  final Function(Note) onDeleteProduct;
 
   const CartPage({
     Key? key,
-    required this.baseNotes,
+    required this.notes,
+    required this.loader,
     required this.cartGames,
     required this.likedGames,
     required this.onLikedToggle,
     required this.onAddToCart,
     required this.onRemoveFromCart,
     required this.onDeleteFromCart,
-    required this.onDeleteProduct,
   }) : super(key: key);
 
+  @override
+  _CartPageState createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
-    final cartGamesList = cartGames.toList();
+    final cartGamesList = widget.cartGames.toList();
     int total = cartGamesList.fold(0, (sum, note) => sum + (note.price * note.amount));
     return Scaffold(
       appBar: AppBar(
@@ -47,11 +52,13 @@ class CartPage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => GamePage(
+                        gameNote: note,
+                        loader: widget.loader,
                         id: (index + 1).toString(),
-                        cartGames: cartGames,
-                        likedGames: likedGames,
-                        onAddCart: onAddToCart,
-                        onLikedToggle: onLikedToggle,
+                        cartGames: widget.cartGames,
+                        likedGames: widget.likedGames,
+                        onAddCart: widget.onAddToCart,
+                        onLikedToggle: widget.onLikedToggle,
                       ),
                     ),
                   );
@@ -115,11 +122,8 @@ class CartPage extends StatelessWidget {
                                                             children: [
                                                               ElevatedButton(
                                                                 onPressed: () {
-                                                                  onDeleteFromCart(
-                                                                      note);
-                                                                  Navigator.of(
-                                                                      context)
-                                                                      .pop(); // Close the dialog
+                                                                  widget.onDeleteFromCart(note);
+                                                                  Navigator.of(context).pop(); // Close the dialog
                                                                 },
                                                                 child: Text(
                                                                     "Да"),
@@ -146,7 +150,7 @@ class CartPage extends StatelessWidget {
                                             );
                                           }
                                           else {
-                                            onRemoveFromCart(note);
+                                            widget.onRemoveFromCart(note);
                                           }
                                         },
                                         icon: Icon(Icons.remove_circle, size: 40,),
@@ -164,7 +168,7 @@ class CartPage extends StatelessWidget {
                                       width: 50,
                                       child: IconButton(
                                         onPressed: () {
-                                          onAddToCart(note);
+                                          widget.onAddToCart(note);
                                         },
                                         icon: Icon(Icons.add_circle, size: 40,),
                                       ),
@@ -194,7 +198,7 @@ class CartPage extends StatelessWidget {
                                                       children: [
                                                         ElevatedButton(
                                                           onPressed: () {
-                                                            onDeleteFromCart(note);
+                                                            widget.onDeleteFromCart(note);
                                                             Navigator.of(context).pop(); // Close the dialog
                                                           },
                                                           child: Text("Да"),
