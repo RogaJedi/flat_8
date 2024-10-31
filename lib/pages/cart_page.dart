@@ -52,7 +52,7 @@ class _CartPageState extends State<CartPage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => GamePage(
-                        gameNote: note,
+                        note: note,
                         loader: widget.loader,
                         id: (index + 1).toString(),
                         cartGames: widget.cartGames,

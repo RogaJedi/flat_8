@@ -56,7 +56,7 @@ class _LikedPageState extends State<LikedPage>{
                 context,
                 MaterialPageRoute(
                   builder: (context) => GamePage(
-                    gameNote: note,
+                    note: note,
                     loader: widget.loader,
                     id: (index + 1).toString(),
                     cartGames: widget.cartGames,
@@ -70,7 +70,7 @@ class _LikedPageState extends State<LikedPage>{
             child: Stack(
               children: [
                 BoardGameCard(
-                  gameNote: note,
+                  note: note,
                 ),
                 Positioned(
                   top: 8,

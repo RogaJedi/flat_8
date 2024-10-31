@@ -9,9 +9,11 @@ class AddGame extends StatefulWidget {
 
   final Function(Note) onNoteAdded;
   final Future<void> loader;
+  final int lastItemId;
   AddGame({
     required this.onNoteAdded,
     required this.loader,
+    required this.lastItemId,
   });
 }
 
@@ -86,7 +88,7 @@ class _AddGameState extends State<AddGame> {
             ElevatedButton(
               onPressed: () {
                 if (_noteControllerTitle.text.isNotEmpty && _noteControllerImageURL.text.isNotEmpty && _noteControllerShortInfo.text.isNotEmpty && _noteControllerFullInfo.text.isNotEmpty && _noteControllerCost.text.isNotEmpty) {
-                  Note newNote = Note(name: _noteControllerTitle.text, basic_info: _noteControllerShortInfo.text, imageUrl:_noteControllerImageURL.text, description: _noteControllerFullInfo.text, price: int.parse(_noteControllerCost.text), amount: 0);
+                  Note newNote = Note(id: widget.lastItemId + 1, name: _noteControllerTitle.text, basicInfo: _noteControllerShortInfo.text, imageUrl:_noteControllerImageURL.text, description: _noteControllerFullInfo.text, price: int.parse(_noteControllerCost.text), amount: 0);
                   widget.onNoteAdded(newNote);
                   widget.loader;
                   Navigator.pop(context);

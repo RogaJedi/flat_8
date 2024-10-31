@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'api_service.dart';
 import '../notes.dart';
 
 class BoardGameCard extends StatelessWidget {
-  final Note gameNote;
+  final Note note;
 
   BoardGameCard({
-    required this.gameNote,
+    required this.note,
   });
 
   @override
@@ -16,11 +15,11 @@ class BoardGameCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(gameNote.imageUrl),
+          Image.network(note.imageUrl),
           Padding(
             padding: EdgeInsets.all(8.0),
             child: Text(
-              gameNote.name,
+              note.name,
               style:
               const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
@@ -28,7 +27,7 @@ class BoardGameCard extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
-              gameNote.basic_info,
+              note.basicInfo,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -36,7 +35,7 @@ class BoardGameCard extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
-              "${gameNote.price} P",
+              "${note.price} P",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),

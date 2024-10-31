@@ -32,17 +32,11 @@ class _HomePageState extends State<HomePage> {
 
   final ApiService _apiService = ApiService();
 
-  @override
-  void initState() {
-    super.initState();
-    widget.loader; // Load notes when the widget initializes
-  }
-
   void _navigateToAddNoteScreen(BuildContext context) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => AddGame(onNoteAdded: this.addNewNote, loader: widget.loader,)),
+          builder: (context) => AddGame(onNoteAdded: this.addNewNote, loader: widget.loader, lastItemId:  widget.notes.last.id)),
     );
 
     if (result != null && result.isNotEmpty) {
@@ -84,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => GamePage(
-                      gameNote: note,
+                      note: note,
                       loader: widget.loader,
                       id: (index + 1).toString(),
                       cartGames: widget.cartGames,
@@ -98,7 +92,7 @@ class _HomePageState extends State<HomePage> {
               child: Stack(
                 children: [
                   BoardGameCard(
-                    gameNote: widget.notes[index],
+                    note: note,
                   ),
                   const Positioned(
                     top: 20,

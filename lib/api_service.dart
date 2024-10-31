@@ -5,6 +5,7 @@ class ApiService {
   final Dio _dio = Dio();
   final String _baseUrl = 'http://10.0.2.2:8080';
 
+  // 0. GET - Get all products
   Future<List<Note>> getProducts() async {
     try {
       final response = await _dio.get('$_baseUrl/products');

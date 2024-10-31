@@ -1,14 +1,16 @@
 class Note {
+  final int id;
   final String name;
-  final String basic_info;
+  final String basicInfo;
   final String imageUrl;
   final String description;
   final int price;
   int amount;
 
   Note({
+    required this.id,
     required this.name,
-    required this.basic_info,
+    required this.basicInfo,
     required this.imageUrl,
     required this.description,
     required this.price,
@@ -17,8 +19,9 @@ class Note {
 
   factory Note.fromJson(Map<String, dynamic> json) {
     return Note(
+      id: json['ID'],
       name: json['Name'],
-      basic_info: json['BasicInfo'],
+      basicInfo: json['BasicInfo'],
       imageUrl: json['ImageURL'],
       description: json['Description'],
       price: json['Price'],
@@ -28,8 +31,9 @@ class Note {
 
   Map<String, dynamic> toJson() {
     return {
+      'ID': id,
       'Name': name,
-      'BasicInfo': basic_info,
+      'BasicInfo': basicInfo,
       'ImageURL': imageUrl,
       'Description': description,
       'Price': price,
