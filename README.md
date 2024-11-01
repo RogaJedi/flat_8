@@ -1,16 +1,21 @@
-# flat_8
+Программирование Корпоративных Систем
 
-A new Flutter project.
+ЭФБО-03-22 Колпащиков И. М.
 
-## Getting Started
+# Практика №8-9
 
-This project is a starting point for a Flutter application.
+READ/считывание товаров
 
-A few resources to get you started if this is your first Flutter project:
+![alt_text](https://github.com/RogaJedi/flat_8/blob/master/pks_8_demo_1.gif)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+DELETE/удаление товара
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![alt_text](https://github.com/RogaJedi/flat_8/blob/master/pks_8_demo_2.gif)
+
+CREATE/создание товара
+
+![alt_text](https://github.com/RogaJedi/flat_8/blob/master/pks_8_demo_3.gif)
+
+UPDATE/обновление товара
+
+![alt_text](https://github.com/RogaJedi/flat_8/blob/master/pks_8_demo_4.gif)
