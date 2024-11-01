@@ -58,7 +58,7 @@ class _LikedPageState extends State<LikedPage>{
                   builder: (context) => GamePage(
                     note: note,
                     loader: widget.loader,
-                    id: (index + 1).toString(),
+                    id: (note.id).toString(),
                     cartGames: widget.cartGames,
                     likedGames: widget.likedGames,
                     onAddCart: widget.onAddCart,

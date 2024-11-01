@@ -54,7 +54,7 @@ class _CartPageState extends State<CartPage> {
                       builder: (context) => GamePage(
                         note: note,
                         loader: widget.loader,
-                        id: (index + 1).toString(),
+                        id: (note.id).toString(),
                         cartGames: widget.cartGames,
                         likedGames: widget.likedGames,
                         onAddCart: widget.onAddToCart,
@@ -75,7 +75,7 @@ class _CartPageState extends State<CartPage> {
                             SizedBox(
                                 width: 100,
                                 height: 100,
-                                child: Image.asset(note.imageUrl)
+                                child: Image.network(note.imageUrl)
                             ),
                             const SizedBox(width: 3),
                             SizedBox(
@@ -89,72 +89,68 @@ class _CartPageState extends State<CartPage> {
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 5),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Row(
                                   children: [
-                                    SizedBox(
-                                      height: 50,
-                                      width: 50,
-                                      child: IconButton(
-                                        onPressed: () {
-                                          if (note.amount == 1) {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  content: SizedBox(
-                                                    height: 120,
-                                                    width: 100,
-                                                    child: Center(
-                                                      child: Column(
-                                                        mainAxisSize: MainAxisSize
-                                                            .min,
-                                                        children: [
-                                                          const Text("Вы хотите удалить этот товар?"),
-                                                          const SizedBox(
-                                                              height: 10),
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment
-                                                                .center,
-                                                            children: [
-                                                              ElevatedButton(
-                                                                onPressed: () {
-                                                                  widget.onDeleteFromCart(note);
-                                                                  Navigator.of(context).pop(); // Close the dialog
-                                                                },
-                                                                child: Text(
-                                                                    "Да"),
-                                                              ),
-                                                              const SizedBox(
-                                                                  width: 6),
-                                                              ElevatedButton(
-                                                                onPressed: () {
-                                                                  Navigator.of(
-                                                                      context)
-                                                                      .pop(); // Close the dialog
-                                                                },
-                                                                child: Text(
-                                                                    "Нет"),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
+                                    IconButton(
+                                      onPressed: () {
+                                        if (note.amount == 1) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                content: SizedBox(
+                                                  height: 120,
+                                                  width: 100,
+                                                  child: Center(
+                                                    child: Column(
+                                                      mainAxisSize: MainAxisSize
+                                                          .min,
+                                                      children: [
+                                                        const Text("Вы хотите удалить этот товар?"),
+                                                        const SizedBox(
+                                                            height: 10),
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment
+                                                              .center,
+                                                          children: [
+                                                            ElevatedButton(
+                                                              onPressed: () {
+                                                                widget.onDeleteFromCart(note);
+                                                                Navigator.of(context).pop(); // Close the dialog
+                                                              },
+                                                              child: Text(
+                                                                  "Да"),
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 6),
+                                                            ElevatedButton(
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                    context)
+                                                                    .pop(); // Close the dialog
+                                                              },
+                                                              child: Text(
+                                                                  "Нет"),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
-                                                );
-                                              },
-                                            );
-                                          }
-                                          else {
-                                            widget.onRemoveFromCart(note);
-                                          }
-                                        },
-                                        icon: Icon(Icons.remove_circle, size: 40,),
-                                      ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        }
+                                        else {
+                                          widget.onRemoveFromCart(note);
+                                        }
+                                      },
+                                      icon: Icon(Icons.remove_circle, size: 35,),
                                     ),
                                     const SizedBox(width: 6),
                                     Text(
@@ -163,65 +159,57 @@ class _CartPageState extends State<CartPage> {
                                           fontSize: 20
                                       ),
                                     ),
-                                    SizedBox(
-                                      height: 50,
-                                      width: 50,
-                                      child: IconButton(
-                                        onPressed: () {
-                                          widget.onAddToCart(note);
-                                        },
-                                        icon: Icon(Icons.add_circle, size: 40,),
-                                      ),
+                                    IconButton(
+                                      onPressed: () {
+                                        widget.onAddToCart(note);
+                                      },
+                                      icon: Icon(Icons.add_circle, size: 35,),
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: 50,
-                                  width: 50,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            content: SizedBox(
-                                              height: 120,
-                                              width: 100,
-                                              child: Center(
-                                                child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    Text("Вы хотите удалить этот товар?"),
-                                                    const SizedBox(height: 10),
-                                                    Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      children: [
-                                                        ElevatedButton(
-                                                          onPressed: () {
-                                                            widget.onDeleteFromCart(note);
-                                                            Navigator.of(context).pop(); // Close the dialog
-                                                          },
-                                                          child: Text("Да"),
-                                                        ),
-                                                        const SizedBox(width: 6),
-                                                        ElevatedButton(
-                                                          onPressed: () {
-                                                            Navigator.of(context).pop(); // Close the dialog
-                                                          },
-                                                          child: Text("Нет"),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          content: SizedBox(
+                                            height: 120,
+                                            width: 100,
+                                            child: Center(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text("Вы хотите удалить этот товар?"),
+                                                  const SizedBox(height: 10),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          widget.onDeleteFromCart(note);
+                                                          Navigator.of(context).pop(); // Close the dialog
+                                                        },
+                                                        child: Text("Да"),
+                                                      ),
+                                                      const SizedBox(width: 6),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(); // Close the dialog
+                                                        },
+                                                        child: Text("Нет"),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    icon: Icon(Icons.delete, size: 40),
-                                  ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: Icon(Icons.delete, size: 35),
                                 ),
                               ],
                             ),

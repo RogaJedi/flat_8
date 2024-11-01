@@ -3,7 +3,7 @@ import 'notes.dart';
 
 class ApiService {
   final Dio _dio = Dio();
-  final String _baseUrl = 'http://10.0.2.2:8080';
+  final String _baseUrl = 'https://pacifismenjoyer.srv.efbo.ru';
 
   // 0. GET - Get all products
   Future<List<Note>> getProducts() async {

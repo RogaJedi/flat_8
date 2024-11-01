@@ -11,6 +11,7 @@ class GamePage extends StatefulWidget {
   final Set<Note> cartGames;
   final Set<Note> likedGames;
   final Function(Note) onAddCart;
+
   final Function(Note) onLikedToggle;
   final Future<void> loader;
 
@@ -33,6 +34,20 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   final ApiService _apiService = ApiService();
+
+  late Future<Note> _note;
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshNote();
+  }
+
+  void _refreshNote() {
+    setState(() {
+      _note = _apiService.getProduct(widget.id);
+    });
+  }
 
   void _navigateToEditGame() async {
     final result = await Navigator.push(
@@ -59,6 +74,7 @@ class _GamePageState extends State<GamePage> {
         amount: 0,
       );
       _apiService.updateProduct(widget.note.id.toString(), updatedNote);
+      _refreshNote();
     }
   }
 
@@ -128,7 +144,100 @@ class _GamePageState extends State<GamePage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: FutureBuilder<Note>(
+        future: _note,
+        builder: (context, snapshot){
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData) {
+            return Center(child: Text('No products found'));
+          }
+          final currentNote = snapshot.data!;
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
+                  children: [
+                    Image.network(currentNote.imageUrl),
+                    const Positioned(
+                        top: 20,
+                        right: 20,
+                        child: Icon(Icons.favorite, color: Colors.white,)
+                    ),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: IconButton(
+                        icon: Icon(
+                          widget.likedGames.contains(currentNote)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: widget.likedGames.contains(currentNote)
+                              ? Colors.red
+                              : Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            widget.onLikedToggle(currentNote);
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        currentNote.basicInfo,
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        currentNote.description,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: 400,
+                        height: 60,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xff504bff),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed:() => widget.onAddCart(currentNote),
+                          child: const FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              "Добавить в корзину",
+                              style: TextStyle(
+                                fontSize: 30,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      )
+    );
+    /*
+    SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -206,6 +315,6 @@ class _GamePageState extends State<GamePage> {
           ],
         ),
       ),
-    );
+     */
   }
 }
